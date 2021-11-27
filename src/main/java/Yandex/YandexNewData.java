@@ -11,6 +11,8 @@ public class YandexNewData implements OnNewDataHandler<ArrayList<String>> {
 
     @Override
     public void OnNewData(Object sender, ArrayList<String> args) {
+        File newDirectory = new File(IMAGE_DESTINATION_FOLDER);
+        newDirectory.mkdir();
         for (String link : args)
             DownloadImage(link);
     }

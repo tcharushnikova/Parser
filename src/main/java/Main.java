@@ -1,3 +1,6 @@
+import Yandex.YandexNewData;
+import Yandex.YandexParser;
+import Yandex.YandexSettings;
 import Leroymerlin.LeroymerlinNewData;
 import Leroymerlin.LeroymerlinParser;
 import Leroymerlin.LeroymerlinSettings;
@@ -17,7 +20,7 @@ public class Main {
                 Выберите действия:
                 1) сбор отзывов с сайта nanegative.ru;
                 2) сбор информации о товаре с сайта leroymerlin.ru;
-                3) скачивание картинки по запросу в google;
+                3) скачивание картинки по запросу в yandex;
                 4) выход из программы""");
         int userChoice;
         Scanner inp = new Scanner(System.in);
@@ -56,6 +59,21 @@ public class Main {
                     parser.Abort();
                 }
                 case 3 -> {
+                    ParserWorker<ArrayList<String>> parser = new ParserWorker<ArrayList<String>>();
+                    parser.setParser(new YandexParser());
+                    System.out.print("Введите тему для поиска изображений: ");
+                    inp.nextLine();
+                    String theme = inp.nextLine();
+                    System.out.print("Введите начальный номер страницы для парсинга: ");
+                    int start = inp.nextInt();
+                    System.out.print("Введите конечный номер страницы для парсинга: ");
+                    int end = inp.nextInt();
+                    parser.setParserSettings(new YandexSettings(theme, start, end));
+                    parser.onCompletedList.add(new Completed());
+                    parser.onNewDataList.add(new YandexNewData());
+                    parser.Start();
+                    Thread.sleep(10000);
+                    parser.Abort();
                 }
             }
         } while (userChoice != 4);
